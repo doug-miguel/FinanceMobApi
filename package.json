@@ -1,0 +1,23 @@
+{
+  "name": "dmfinance",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "dev": "tsx --watch --trace-warnings index.ts",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.28.0",
+    "tsup": "^8.1.0",
+    "tsx": "^4.15.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9"
+  }
+}
