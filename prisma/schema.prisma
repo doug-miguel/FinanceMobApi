@@ -8,14 +8,14 @@ datasource db {
 }
 
 model User {
-  id                Int       @id @default(autoincrement())
+  id                Int      @id @default(autoincrement())
   full_name         String
-  email             String    @unique
+  email             String   @unique
   username          String?
   phone             String
   birthday          DateTime
-  created_at        DateTime  @default(now())
-  update_at         DateTime?
+  created_at        DateTime @default(now())
+  update_at         DateTime @updatedAt
   password          String
   security_question String
   security_response String
@@ -37,7 +37,6 @@ model Group {
   @@map("groups")
 }
 
-// Define o modelo UserGroup para representar a relação muitos-para-muitos entre User e Group
 model UserGroup {
   id       Int @id @default(autoincrement())
   user_id  Int
@@ -57,7 +56,7 @@ model Expense {
   user_id     Int
   group_id    Int?
   created_at  DateTime @default(now())
-  update_at   DateTime
+  update_at   DateTime @updatedAt
 
   user     User            @relation(fields: [user_id], references: [id])
   group    Group?          @relation(fields: [group_id], references: [id])
