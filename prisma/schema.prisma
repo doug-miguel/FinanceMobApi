@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  full_name         String
+  email             String    @unique
+  username          String?
+  phone             String
+  birthday          DateTime
+  created_at        DateTime  @default(now())
+  update_at         DateTime?
+  password          String
+  security_question String
+  security_response String
+
+  groups  UserGroup[]
+  Expense Expense[]
+
+  @@map("users")
+}
+
+model Group {
+  id          Int    @id @default(autoincrement())
+  description String
+  active      Int
+
+  users   UserGroup[]
+  Expense Expense[]
+
+  @@map("groups")
+}
+
+// Define o modelo UserGroup para representar a relação muitos-para-muitos entre User e Group
+model UserGroup {
+  id       Int @id @default(autoincrement())
+  user_id  Int
+  group_id Int
+
+  user  User  @relation(fields: [user_id], references: [id])
+  group Group @relation(fields: [group_id], references: [id])
+
+  @@map("users_groups")
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement())
+  price       Int
+  notes       String
+  category_id Int
+  user_id     Int
+  group_id    Int?
+  created_at  DateTime @default(now())
+  update_at   DateTime
+
+  user     User            @relation(fields: [user_id], references: [id])
+  group    Group?          @relation(fields: [group_id], references: [id])
+  category ExpenseCategory @relation(fields: [category_id], references: [id])
+
+  @@map("expenses")
+}
+
+model ExpenseCategory {
+  id            Int    @id @default(autoincrement())
+  category_name String
+
+  expenses Expense[]
+
+  @@map("expense_categories")
+}
