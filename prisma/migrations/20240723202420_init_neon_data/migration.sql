@@ -7,7 +7,7 @@ CREATE TABLE "users" (
     "phone" TEXT NOT NULL,
     "birthday" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "update_at" TIMESTAMP(3),
+    "update_at" TIMESTAMP(3) NOT NULL,
     "password" TEXT NOT NULL,
     "security_question" TEXT NOT NULL,
     "security_response" TEXT NOT NULL,

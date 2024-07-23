@@ -1,5 +1,7 @@
 import { fastifyCors } from "@fastify/cors";
 import { fastify } from "fastify";
+import fjwt from '@fastify/jwt'
+import fCookie from '@fastify/cookie'
 import {
   jsonSchemaTransform,
   serializerCompiler,
@@ -15,6 +17,13 @@ import router from "./routes/router.js";
 export const app = fastify({
   logger: true,
 }).withTypeProvider<ZodTypeProvider>();
+
+app.register(fjwt, { secret: process.env.SECRET || '' });
+
+app.register(fCookie, {
+  secret: process.env.SECRET || '',
+  hook: 'preHandler',
+});
 
 app.register(fastifyCors, {
   origin: "*",
@@ -35,7 +44,7 @@ app.register(fastifySwagger, {
 });
 
 app.register(fastifySwaggerUi, {
-  routePrefix: "/docs",
+  routePrefix: "/swagger",
 });
 
 app.setValidatorCompiler(validatorCompiler);

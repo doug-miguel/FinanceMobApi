@@ -4,28 +4,29 @@ import { createUserSchema } from "../models/user.model.js";
 import { CreateUser } from "../controllers/user.controller.js";
 
 async function userRouter(fastify: FastifyInstance) {
-  fastify.withTypeProvider<ZodTypeProvider>().get("/",
-    {
-      schema: {},
-    },
-    async (req: FastifyRequest, res: FastifyReply) => {
-      return "authRouter!";
-    }
-  );
-
-  fastify.get("/:id", async (req: FastifyRequest, res: FastifyReply) => {
-    return "expensesVariableRouter por id!";
-  });
-
   fastify.withTypeProvider<ZodTypeProvider>().post("/create", createUserSchema, CreateUser);
 
-  fastify.put("/update", async (req: FastifyRequest, res: FastifyReply) => {
-    return "expensesVariableRouter atualizar!";
-  });
+  // fastify.withTypeProvider<ZodTypeProvider>().get("/",
+  //   {
+  //     schema: {},
+  //   },
+  //   async (req: FastifyRequest, res: FastifyReply) => {
+  //     return "authRouter!";
+  //   }
+  // );
 
-  fastify.delete("/:id", async (req: FastifyRequest, res: FastifyReply) => {
-    return "expensesVariableRouter deletar!";
-  });
+  // fastify.get("/", async (req: FastifyRequest, res: FastifyReply) => {
+  //   return "expensesVariableRouter por id!";
+  // });
+
+
+  // fastify.put("/update", async (req: FastifyRequest, res: FastifyReply) => {
+  //   return "expensesVariableRouter atualizar!";
+  // });
+
+  // fastify.delete("/:id", async (req: FastifyRequest, res: FastifyReply) => {
+  //   return "expensesVariableRouter deletar!";
+  // });
 }
 
 export default userRouter;
