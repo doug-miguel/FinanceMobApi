@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { ZodError } from "zod";
-import { BadRequest } from "./bad-request";
-import { NoContent } from "./no-content";
+import { BadRequest } from "./bad-request.js";
+import { NoContent } from "./no-content.js";
 
 type FastifyErrorhandler = FastifyInstance["errorHandler"];
 

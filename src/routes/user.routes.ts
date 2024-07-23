@@ -1,6 +1,9 @@
+import bcrypt from "bcrypt";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { z } from "zod";
+import { BadRequest } from "../Errors/bad-request.js";
+import { prisma } from "../lib/prisma.js";
 
 async function userRouter(fastify: FastifyInstance) {
   fastify.withTypeProvider<ZodTypeProvider>().get(
@@ -21,14 +24,16 @@ async function userRouter(fastify: FastifyInstance) {
     "/create",
     {
       schema: {
+        summary: "Create an user",
+        tags: ["User"],
         body: z.object({
           full_name: z.string().min(5),
           email: z.string().email(),
           phone: z.string(),
-          birthday: z.string().date(),
+          birthday: z.string(),
           password: z.string(),
-          security_question: z.string().min(5),
-          security_response: z.string().min(5),
+          security_question: z.string(),
+          security_response: z.string(),
         }),
         response: {
           201: z.object({
@@ -37,10 +42,42 @@ async function userRouter(fastify: FastifyInstance) {
         },
       },
     },
-    async (req: FastifyRequest, res: FastifyReply) => {
-      console.log("🚀 ~ fastify.get ~ req:", req.body);
+    async (req, res) => {
+      const {
+        full_name,
+        email,
+        phone,
+        birthday,
+        password,
+        security_question,
+        security_response,
+      } = req.body;
 
-      return res.status(200).send({ usuario: "Sem usuario" });
+      const existsUserEmail = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (existsUserEmail !== null) {
+        throw new BadRequest("Já existe um usuário com este e-mail!");
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const user = await prisma.user.create({
+        data: {
+          full_name,
+          email,
+          phone,
+          birthday,
+          password: hashedPassword,
+          security_question,
+          security_response,
+        },
+      });
+
+      return res.status(201).send({ userId: user.id });
     }
   );
 
