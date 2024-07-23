@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 interface CreateUserRequest {
     Body: {
         full_name: string;
+        username: string;
         email: string;
         phone: string;
         birthday: string;
@@ -20,6 +21,7 @@ interface CreateUserRequest {
 export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: FastifyReply) {
     const {
         full_name,
+        username,
         email,
         phone,
         birthday,
@@ -44,6 +46,7 @@ export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: Fa
         data: {
             full_name,
             email,
+            username,
             phone,
             birthday,
             password: hashedPassword,
