@@ -10,7 +10,7 @@ export const createUserSchema = {
             phone: z.string(),
             birthday: z.string(),
             password: z.string({ message: "Informe uma senha!" }).min(8, {
-                message: "A senha precisa conter mais de 8 caracteres.",
+                message: "A senha precisa conter no minimo 8 caracteres.",
             }),
             security_question: z.string(),
             security_response: z.string(),
