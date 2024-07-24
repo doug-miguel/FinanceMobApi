@@ -5,7 +5,7 @@ export const createUserSchema: FastifySchema = {
     summary: "Create an user",
     tags: ["User"],
     body: z.object({
-        full_name: z.string({}).min(5),
+        full_name: z.string().min(5),
         username: z.string(),
         email: z.string().email(),
         phone: z.string(),
