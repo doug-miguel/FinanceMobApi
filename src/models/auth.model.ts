@@ -12,6 +12,7 @@ export const authSchema = {
         }),
         response: {
             200: z.object({
+                token: z.string(),
             }),
         },
     },

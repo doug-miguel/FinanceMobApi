@@ -1,8 +1,7 @@
-import fastify, { FastifyRequest, FastifyReply } from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { ValidateAuthenticate } from '../middlewares/auth.middlewares.js';
 
 const prisma = new PrismaClient();
 
