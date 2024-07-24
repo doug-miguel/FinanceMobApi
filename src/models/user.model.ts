@@ -27,7 +27,6 @@ export const updateUserSchema: FastifySchema = {
     summary: "Update an user",
     tags: ["User"],
     body: z.object({
-        id: z.number(),
         full_name: z.string({}).min(5).optional(),
         username: z.string().optional(),
         email: z.string().email().optional(),

@@ -2,6 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
+import { DecodePayloadType } from '@fastify/jwt';
 
 const prisma = new PrismaClient();
 
@@ -18,9 +19,17 @@ interface CreateUserRequest {
     };
 }
 
+export interface DecocoTokenProps {
+    id: number
+    name: string
+    email: string
+    username: string
+    iat: number
+    exp: number
+}
+
 interface UpdateUserRequest {
     Body: {
-        id: number
         full_name?: string;
         username?: string;
         email?: string;
@@ -74,7 +83,6 @@ export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: Fa
 
 export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: FastifyReply) {
     const {
-        id,
         full_name,
         username,
         email,
@@ -84,6 +92,8 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
         security_question,
         security_response,
     } = req.body;
+
+    const { id }: DecocoTokenProps = await req.jwtDecode();
 
     const existingUser = await prisma.user.findUnique({
         where: { id },
