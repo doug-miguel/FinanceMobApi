@@ -2,44 +2,9 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { DecodePayloadType } from '@fastify/jwt';
+import { CreateUserRequest, UpdateUserRequest, DecocoTokenProps, UserProps } from '../types/user.types.js';
 
 const prisma = new PrismaClient();
-
-interface CreateUserRequest {
-    Body: {
-        full_name: string;
-        username: string;
-        email: string;
-        phone: string;
-        birthday: string;
-        password: string;
-        security_question: string;
-        security_response: string;
-    };
-}
-
-export interface DecocoTokenProps {
-    id: number
-    name: string
-    email: string
-    username: string
-    iat: number
-    exp: number
-}
-
-interface UpdateUserRequest {
-    Body: {
-        full_name?: string;
-        username?: string;
-        email?: string;
-        phone?: string;
-        birthday?: string;
-        password?: string;
-        security_question?: string;
-        security_response?: string;
-    };
-}
 
 export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: FastifyReply) {
     const {
@@ -82,55 +47,62 @@ export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: Fa
 };
 
 export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: FastifyReply) {
-    const {
-        full_name,
-        username,
-        email,
-        phone,
-        birthday,
-        password,
-        security_question,
-        security_response,
-    } = req.body;
-
-    const { id }: DecocoTokenProps = await req.jwtDecode();
-
-    const existingUser = await prisma.user.findUnique({
-        where: { id },
-    });
-
-    if (!existingUser) {
-        throw new BadRequest('Usuário não encontrado');
-    }
-
-    if (email !== existingUser.email) {
-        const userWithEmail = await prisma.user.findUnique({
-            where: { email },
-        });
-
-        if (userWithEmail) {
-            throw new BadRequest('Já existe um usuário com este e-mail');
-        }
-    }
-
-    let hashedPassword;
-    if (password) {
-        hashedPassword = await bcrypt.hash(password, 10);
-    }
-
-    await prisma.user.update({
-        where: { id },
-        data: {
+    try {
+        const {
             full_name,
             username,
             email,
             phone,
             birthday,
-            password: hashedPassword,
+            password,
             security_question,
             security_response,
-        },
-    });
+        } = req.body;
 
-    return res.status(200).send({ message: 'Usuário atualizado' });
+        const { id }: DecocoTokenProps = await req.jwtDecode();
+
+        const existingUser = await prisma.user.findUnique({
+            where: { id },
+        });
+
+        if (!existingUser) {
+            throw new BadRequest('Usuário não encontrado');
+        }
+
+        if (email && email !== existingUser.email) {
+            const userWithEmail = await prisma.user.findUnique({
+                where: { email },
+            });
+
+            if (userWithEmail) {
+                throw new BadRequest('Já existe um usuário com este e-mail');
+            }
+        }
+
+        let hashedPassword;
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
+
+        const data: UserProps = {};
+
+        if (full_name) data.full_name = full_name;
+        if (username) data.username = username;
+        if (email) data.email = email;
+        if (phone) data.phone = phone;
+        if (birthday) data.birthday = birthday;
+        if (password) data.password = hashedPassword;
+        if (security_question) data.security_question = security_question;
+        if (security_response) data.security_response = security_response;
+
+        await prisma.user.update({
+            where: { id },
+            data,
+        });
+
+        return res.status(200).send({ message: 'Usuário atualizado' });
+    } catch (error: any) {
+        return res.status(error.statusCode).send({ message: error.message })
+    }
+
 }

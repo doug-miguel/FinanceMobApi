@@ -27,14 +27,12 @@ export const updateUserSchema: FastifySchema = {
     summary: "Update an user",
     tags: ["User"],
     body: z.object({
-        full_name: z.string({}).min(5).optional(),
+        full_name: z.string().optional(),
         username: z.string().optional(),
-        email: z.string().email().optional(),
+        email: z.string().optional(),
         phone: z.string().optional(),
         birthday: z.string().optional(),
-        password: z.string({ message: "Informe uma senha!" }).min(8, {
-            message: "A senha precisa conter no mínimo 8 caracteres.",
-        }).optional(),
+        password: z.string().optional(),
         security_question: z.string().optional(),
         security_response: z.string().optional(),
     }),
