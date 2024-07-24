@@ -14,28 +14,25 @@ interface AuthRequest {
 export async function Auth(req: FastifyRequest<AuthRequest>, res: FastifyReply) {
     const { email, password } = req.body;
 
-    try {
-        const existsUserEmail = await prisma.user.findUnique({
-            where: {
-                email,
-            },
-        });
+    const existsUserEmail = await prisma.user.findUnique({
+        where: {
+            email,
+        },
+    });
 
-        if (!existsUserEmail) throw new BadRequest("Usúario não encontrado");
-        const comparePassword = await bcrypt.compare(password, existsUserEmail.password);
-        if (!comparePassword) throw new BadRequest("Senha incorreta");
+    if (!existsUserEmail) throw new BadRequest("Usúario não encontrado");
+    const comparePassword = await bcrypt.compare(password, existsUserEmail.password);
+    if (!comparePassword) throw new BadRequest("Senha incorreta");
 
-        const payload = {
-            id: existsUserEmail.id,
-            name: existsUserEmail.full_name,
-            email: existsUserEmail.email,
-            username: existsUserEmail.username
-        };
+    const payload = {
+        id: existsUserEmail.id,
+        name: existsUserEmail.full_name,
+        email: existsUserEmail.email,
+        username: existsUserEmail.username
+    };
 
-        const token = await res.jwtSign(payload, { expiresIn: '30m' });
+    const token = await res.jwtSign(payload, { expiresIn: '30m' });
 
-        return res.status(200).send(token);
-    } catch (error) {
-        return { code: 400, body: { messagem: error } }
-    }
+
+    return res.status(200).send(token);
 }
