@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { CreateUserRequest, UpdateUserRequest, DecocoTokenProps, UserProps } from '../types/user.types.js';
+import { CreateUserRequest, UpdateUserRequest, DecocoTokenProps } from '../types/user.types.js';
 
 const prisma = new PrismaClient();
 
@@ -84,7 +84,7 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
             hashedPassword = await bcrypt.hash(password, 10);
         }
 
-        const data: UserProps = {};
+        const data: Partial<UpdateUserRequest['Body']> = {};
 
         if (full_name) data.full_name = full_name;
         if (username) data.username = username;
@@ -102,7 +102,6 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
 
         return res.status(200).send({ message: 'Usuário atualizado' });
     } catch (error: any) {
-        return res.status(error.statusCode).send({ message: error.message })
+        return res.status(error.statusCode).send({ message: error.message });
     }
-
 }

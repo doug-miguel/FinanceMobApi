@@ -21,16 +21,14 @@ export interface DecocoTokenProps {
 }
 
 export interface UpdateUserRequest {
-  Body: UserProps;
-}
-
-export interface UserProps {
-  full_name?: string;
-  username?: string;
-  email?: string;
-  phone?: string;
-  birthday?: string;
-  password?: string;
-  security_question?: string;
-  security_response?: string;
+  Body: {
+    full_name?: string;
+    username?: string;
+    email?: string;
+    phone?: string;
+    birthday?: string;
+    password?: string;
+    security_question?: string;
+    security_response?: string;
+  };
 }
