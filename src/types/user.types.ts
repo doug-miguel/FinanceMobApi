@@ -11,6 +11,17 @@ export interface CreateUserRequest {
   };
 }
 
+export interface GetUserRequest {
+  full_name: string;
+  username: string;
+  email: string;
+  phone: string;
+  birthday: string;
+  password: string;
+  security_question: string;
+  security_response: string;
+}
+
 export interface DecodeTokenProps {
   id: number
   name: string
@@ -38,4 +49,8 @@ export interface ResetRequest {
     security_question: string;
     security_response: string;
   };
+}
+
+export interface Params {
+  id: string;
 }

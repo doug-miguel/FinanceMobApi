@@ -35,7 +35,7 @@ export const updateUserSchema: FastifySchema = {
         password: z.string().optional(),
         security_question: z.string().optional(),
         security_response: z.string().optional(),
-    }),
+    })
 };
 
 export const resetUserSchema: FastifySchema = {

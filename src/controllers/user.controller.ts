@@ -2,9 +2,26 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { CreateUserRequest, UpdateUserRequest, DecodeTokenProps, ResetRequest } from '../types/user.types.js';
+import { CreateUserRequest, UpdateUserRequest, DecodeTokenProps, ResetRequest, Params } from '../types/user.types.js';
 
 const prisma = new PrismaClient();
+
+export async function GetUser(req: FastifyRequest<{ Params: Params }>, res: FastifyReply) {
+    const idParams = +req.params.id;
+    const { id }: DecodeTokenProps = await req.jwtDecode();
+
+    if (idParams !== id) {
+        throw new BadRequest("Usúario diferente das informações do token!");
+    }
+
+    const existingUser = await prisma.user.findUnique({
+        where: { id },
+    });
+
+    const { password, ...userWithoutPassword }: any = existingUser;
+
+    return res.status(200).send(userWithoutPassword);
+};
 
 export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: FastifyReply) {
     const {
