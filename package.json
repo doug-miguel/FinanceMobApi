@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
-    "dev": "tsx --watch --trace-warnings index.ts",
+    "dev": "tsx --inspect --watch --trace-warnings index.ts",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify"
   },
   "keywords": [],

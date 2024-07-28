@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { CreateUserRequest, UpdateUserRequest, DecocoTokenProps } from '../types/user.types.js';
+import { CreateUserRequest, UpdateUserRequest, DecodeTokenProps, ResetRequest } from '../types/user.types.js';
 
 const prisma = new PrismaClient();
 
@@ -59,7 +59,7 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
             security_response,
         } = req.body;
 
-        const { id }: DecocoTokenProps = await req.jwtDecode();
+        const { id }: DecodeTokenProps = await req.jwtDecode();
 
         const existingUser = await prisma.user.findUnique({
             where: { id },
@@ -104,4 +104,31 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
     } catch (error: any) {
         return res.status(error.statusCode).send({ message: error.message });
     }
+}
+
+export async function ResetReqResUser(req: FastifyRequest<ResetRequest>, res: FastifyReply) {
+    const {
+        security_question,
+        security_response,
+    } = req.body;
+
+    const { id }: DecodeTokenProps = await req.jwtDecode();
+
+    const existingUser = await prisma.user.findUnique({
+        where: { id },
+    });
+
+    if (!existingUser) {
+        throw new BadRequest('Usuário não encontrado');
+    }
+
+    if (existingUser.security_question !== security_question) {
+        throw new BadRequest('Pergunta informada incorreta');
+    }
+
+    if (existingUser.security_response !== security_response) {
+        throw new BadRequest('Resposta informada incorreta');
+    }
+
+    return res.status(200).send({ validate: true });
 }

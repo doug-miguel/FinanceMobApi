@@ -11,7 +11,7 @@ export interface CreateUserRequest {
   };
 }
 
-export interface DecocoTokenProps {
+export interface DecodeTokenProps {
   id: number
   name: string
   email: string
@@ -30,5 +30,12 @@ export interface UpdateUserRequest {
     password?: string;
     security_question?: string;
     security_response?: string;
+  };
+}
+
+export interface ResetRequest {
+  Body: {
+    security_question: string;
+    security_response: string;
   };
 }
