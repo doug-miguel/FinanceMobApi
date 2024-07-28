@@ -21,7 +21,7 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.withTypeProvider<ZodTypeProvider>().post<ResetRequest>('/validatereq', {
     preHandler: ValidateAuthenticate,
     schema: resetUserSchema
-  }, ResetReqResUser)
+  }, ResetReqResUser);
 }
 
 export default userRouter;

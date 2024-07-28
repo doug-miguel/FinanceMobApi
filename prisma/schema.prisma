@@ -20,8 +20,7 @@ model User {
   security_question String
   security_response String
 
-  groups  UserGroup[]
-  Expense Expense[]
+  groups UserGroup[]
 
   @@map("users")
 }
@@ -51,6 +50,7 @@ model UserGroup {
 model Expense {
   id          Int      @id @default(autoincrement())
   price       Int
+  title       String
   notes       String
   category_id Int
   user_id     Int
@@ -58,7 +58,6 @@ model Expense {
   created_at  DateTime @default(now())
   update_at   DateTime @updatedAt
 
-  user     User            @relation(fields: [user_id], references: [id])
   group    Group?          @relation(fields: [group_id], references: [id])
   category ExpenseCategory @relation(fields: [category_id], references: [id])
 

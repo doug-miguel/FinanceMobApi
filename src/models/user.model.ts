@@ -22,7 +22,7 @@ export const createUserSchema: FastifySchema = {
         security_response: z.string(),
     }),
     response: {
-        200: z.object({
+        201: z.object({
             userId: z.number(),
         }),
     },
@@ -51,7 +51,7 @@ export const resetUserSchema: FastifySchema = {
         security_response: z.string(),
     }),
     response: {
-        200: z.object({
+        201: z.object({
             validate: z.boolean(),
         }),
     },

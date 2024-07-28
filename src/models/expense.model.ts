@@ -11,3 +11,20 @@ export const getCategorySchema: FastifySchema = {
         }),
     },
 };
+
+export const expenseCreateSchema: FastifySchema = {
+    summary: "Create expense expense",
+    tags: ["Expenses"],
+    body: z.object({
+        title: z.string(),
+        notes: z.string(),
+        price: z.number(),
+        category_id: z.number(),
+        group_id: z.number().optional(),
+    }),
+    response: {
+        201: z.object({
+            idExpense: z.number(),
+        }),
+    },
+};
