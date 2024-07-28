@@ -20,8 +20,6 @@ export async function CreateExpensePost(req: FastifyRequest<ExpenseRequest>, res
     } = req.body;
 
     const { id }: DecodeTokenProps = await req.jwtDecode();
-
-
     const expense = await prisma.expense.create({
         data: {
             title,
