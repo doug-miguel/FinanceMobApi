@@ -1,6 +1,11 @@
 import { FastifySchema } from "fastify";
 import { z } from "zod";
 
+export const getUserSchema: FastifySchema = {
+    summary: "Get an user",
+    tags: ["User"],
+};
+
 export const createUserSchema: FastifySchema = {
     summary: "Create an user",
     tags: ["User"],

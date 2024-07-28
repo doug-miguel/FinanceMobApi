@@ -22,15 +22,6 @@ export interface GetUserRequest {
   security_response: string;
 }
 
-export interface DecodeTokenProps {
-  id: number
-  name: string
-  email: string
-  username: string
-  iat: number
-  exp: number
-}
-
 export interface UpdateUserRequest {
   Body: {
     full_name?: string;

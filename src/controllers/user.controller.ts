@@ -2,7 +2,8 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { CreateUserRequest, UpdateUserRequest, DecodeTokenProps, ResetRequest, Params } from '../types/user.types.js';
+import { CreateUserRequest, UpdateUserRequest, ResetRequest, Params } from '../types/user.types.js';
+import { DecodeTokenProps } from '../types/auth.types.js';
 
 const prisma = new PrismaClient();
 
