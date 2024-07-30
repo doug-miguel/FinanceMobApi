@@ -2,8 +2,9 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
-import { CreateUserRequest, UpdateUserRequest, ResetRequest, Params } from '../types/user.types.js';
+import { CreateUserRequest, UpdateUserRequest, ResetRequest } from '../types/user.types.js';
 import { DecodeTokenProps } from '../types/auth.types.js';
+import { Params } from '../types/generic.js';
 
 const prisma = new PrismaClient();
 
@@ -13,7 +14,7 @@ export async function GetUser(req: FastifyRequest<{ Params: Params }>, res: Fast
 
     if (idParams !== id) {
         throw new BadRequest("Usúario diferente das informações do token!");
-    }
+    };
 
     const existingUser = await prisma.user.findUnique({
         where: { id },
@@ -44,7 +45,7 @@ export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: Fa
 
     if (existsUserEmail !== null) {
         throw new BadRequest("Já existe um usuário com este e-mail!");
-    }
+    };
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -100,7 +101,7 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
         let hashedPassword;
         if (password) {
             hashedPassword = await bcrypt.hash(password, 10);
-        }
+        };
 
         const data: Partial<UpdateUserRequest['Body']> = {};
 
@@ -121,8 +122,8 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
         return res.status(200).send({ message: 'Usuário atualizado' });
     } catch (error: any) {
         return res.status(error.statusCode).send({ message: error.message });
-    }
-}
+    };
+};
 
 export async function ResetReqResUser(req: FastifyRequest<ResetRequest>, res: FastifyReply) {
     const {
@@ -138,15 +139,15 @@ export async function ResetReqResUser(req: FastifyRequest<ResetRequest>, res: Fa
 
     if (!existingUser) {
         throw new BadRequest('Usuário não encontrado');
-    }
+    };
 
     if (existingUser.security_question !== security_question) {
         throw new BadRequest('Pergunta informada incorreta');
-    }
+    };
 
     if (existingUser.security_response !== security_response) {
         throw new BadRequest('Resposta informada incorreta');
-    }
+    };
 
     return res.status(200).send({ validate: true });
-}
+};

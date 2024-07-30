@@ -6,4 +6,4 @@ export interface ExpenseRequest {
         category_id: number;
         group_id?: number;
     }
-}
+};

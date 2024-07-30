@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { categorySchema } from "../types/category.types.js";
+import { categorySchema, expenseSchema } from "../types/category.types.js";
 import { FastifySchema } from "fastify";
 
 export const getCategorySchema: FastifySchema = {
@@ -8,6 +8,16 @@ export const getCategorySchema: FastifySchema = {
     response: {
         200: z.object({
             category: z.array(categorySchema),
+        }),
+    },
+};
+
+export const getExpenseSchema: FastifySchema = {
+    summary: "Get expense",
+    tags: ["Expenses"],
+    response: {
+        200: z.object({
+            expenses: z.array(expenseSchema),
         }),
     },
 };

@@ -9,7 +9,7 @@ export interface CreateUserRequest {
     security_question: string;
     security_response: string;
   };
-}
+};
 
 export interface GetUserRequest {
   full_name: string;
@@ -20,7 +20,7 @@ export interface GetUserRequest {
   password: string;
   security_question: string;
   security_response: string;
-}
+};
 
 export interface UpdateUserRequest {
   Body: {
@@ -33,15 +33,11 @@ export interface UpdateUserRequest {
     security_question?: string;
     security_response?: string;
   };
-}
+};
 
 export interface ResetRequest {
   Body: {
     security_question: string;
     security_response: string;
   };
-}
-
-export interface Params {
-  id: string;
-}
+};

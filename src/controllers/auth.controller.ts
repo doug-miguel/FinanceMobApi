@@ -34,4 +34,4 @@ export async function Auth(req: FastifyRequest<AuthRequest>, res: FastifyReply) 
     const token = await res.jwtSign(payload, { expiresIn: '2h' });
 
     return res.status(200).send({ token });
-}
+};

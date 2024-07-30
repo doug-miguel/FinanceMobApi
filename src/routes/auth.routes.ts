@@ -5,6 +5,6 @@ import { authSchema } from '../models/auth.model.js';
 
 async function authRouter(fastify: FastifyInstance) {
     fastify.withTypeProvider<ZodTypeProvider>().post("", { schema: authSchema }, Auth);
-}
+};
 
 export default authRouter;

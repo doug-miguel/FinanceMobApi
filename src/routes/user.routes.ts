@@ -3,7 +3,8 @@ import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { CreateUser, GetUser, ResetReqResUser, UpdateUser } from "../controllers/user.controller.js";
 import { ValidateAuthenticate } from "../middlewares/auth.middlewares.js";
 import { createUserSchema, getUserSchema, resetUserSchema, updateUserSchema } from "../models/user.model.js";
-import { Params, ResetRequest, UpdateUserRequest } from "../types/user.types.js";
+import { ResetRequest, UpdateUserRequest } from "../types/user.types.js";
+import { Params } from "../types/generic.js";
 
 async function userRouter(fastify: FastifyInstance) {
   fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/id/:id", {
@@ -22,6 +23,6 @@ async function userRouter(fastify: FastifyInstance) {
     preHandler: ValidateAuthenticate,
     schema: resetUserSchema
   }, ResetReqResUser);
-}
+};
 
 export default userRouter;

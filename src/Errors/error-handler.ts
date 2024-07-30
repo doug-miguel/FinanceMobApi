@@ -12,19 +12,19 @@ export const errorHandler: FastifyErrorhandler = (error, request, reply) => {
       message: "Error during validation.",
       errors: error.flatten().fieldErrors,
     });
-  }
+  };
 
   if (error instanceof BadRequest) {
     return reply.status(400).send({ message: error.message });
-  }
+  };
 
   if (error instanceof Unauthorized) {
     return reply.status(401).send({ message: error.message });
-  }
+  };
 
   if (error instanceof NoContent) {
     return reply.status(204);
-  }
+  };
 
   return reply.status(500).send({ message: "Internal server error!", error });
 };
