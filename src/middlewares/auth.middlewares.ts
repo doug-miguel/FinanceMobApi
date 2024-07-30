@@ -1,16 +1,20 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { Unauthorized } from '../Errors/unauthorized.js';
 
-export const ValidateAuthenticate = async (req: FastifyRequest, res: FastifyReply, done: () => void) => {
+export const ValidateAuthenticate = async (req: FastifyRequest, res: FastifyReply) => {
     try {
         const token = req.headers.authorization?.replace(/^Bearer /i, '');
-        if (!token) throw new Unauthorized('Não autorizado - Token não encontrado.');
+        if (!token) {
+            throw new Unauthorized('Não autorizado - Token não encontrado.');
+        }
 
         const decodedToken: any = await req.jwtVerify();
-        if (!decodedToken) throw new Unauthorized('Não autorizado - Token inválido.');
+        if (!decodedToken) {
+            throw new Unauthorized('Não autorizado - Token inválido.');
+        }
 
-        return done();
+        return;
     } catch (error: any) {
-        return res.status(error.statusCode).send({message: error.message})
+        res.status(error.statusCode || 500).send({ message: error.message });
     }
 };

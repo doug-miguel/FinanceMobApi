@@ -31,7 +31,7 @@ export async function Auth(req: FastifyRequest<AuthRequest>, res: FastifyReply) 
         username: existsUserEmail.username
     };
 
-    const token = await res.jwtSign(payload, { expiresIn: '30m' });
+    const token = await res.jwtSign(payload, { expiresIn: '2h' });
 
     return res.status(200).send({ token });
 }
