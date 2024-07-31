@@ -2,7 +2,6 @@ import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
 import { ExpenseRequest } from '../types/expense.types.js';
 import { DecodeTokenProps } from '../types/auth.types.js';
-import { Params } from '../types/generic.js';
 
 const prisma = new PrismaClient();
 
