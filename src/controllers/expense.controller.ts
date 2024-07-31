@@ -11,12 +11,31 @@ export async function GetCategory(req: FastifyRequest, res: FastifyReply) {
     return res.status(200).send({ category: category });
 };
 
-export async function ExpenseGet(req: FastifyRequest<{ Params: Params }>, res: FastifyReply) {
+export async function ExpenseGet(req: FastifyRequest, res: FastifyReply) {
     try {
-        const { id } = req.params;
+        const { id }: DecodeTokenProps = await req.jwtDecode();
+        const { category, group_id, idExpense, size, pages }: any = req.query;
+        const whereConditions = {
+            ...(group_id ? { group_id: +group_id } : { user_id: id }),
+            ...(category ? { category_id: +category } : {}),
+            ...(idExpense ? { id: +idExpense } : {}),
+        }
+
+        let sizeCounter;
+        let pagesCounter;
+
+        if (!size) sizeCounter = 20;
+        if (size) sizeCounter = +size;
+
+        if (!pages) pagesCounter = 0;
+        if (pages) pagesCounter = (+pages - 1) * size;
+
         const expenses = await prisma.expense.findMany({
-            where: {
-                user_id: +id
+            take: sizeCounter,
+            skip: pagesCounter,
+            where: whereConditions,
+            orderBy: {
+                id: 'asc'
             }
         });
 

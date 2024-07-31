@@ -8,7 +8,7 @@ import { Params } from '../types/generic.js';
 
 async function expensesRouter(fastify: FastifyInstance) {
     fastify.withTypeProvider<ZodTypeProvider>().post<ExpenseRequest>("/expensecreate", { preHandler: ValidateAuthenticate, schema: expenseCreateSchema }, CreateExpensePost);
-    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/expensesId/:id", { preHandler: ValidateAuthenticate, schema: getExpenseSchema }, ExpenseGet);
+    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/expensesId", { preHandler: ValidateAuthenticate, schema: getExpenseSchema }, ExpenseGet);
     fastify.withTypeProvider<ZodTypeProvider>().get("/category", { preHandler: ValidateAuthenticate, schema: getCategorySchema }, GetCategory);
 };
 
