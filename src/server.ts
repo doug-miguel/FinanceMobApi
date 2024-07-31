@@ -1,7 +1,7 @@
+import fCookie from "@fastify/cookie";
 import { fastifyCors } from "@fastify/cors";
+import fjwt from "@fastify/jwt";
 import { fastify } from "fastify";
-import fjwt from '@fastify/jwt'
-import fCookie from '@fastify/cookie'
 import {
   jsonSchemaTransform,
   serializerCompiler,
@@ -18,11 +18,11 @@ export const app = fastify({
   logger: true,
 }).withTypeProvider<ZodTypeProvider>();
 
-app.register(fjwt, { secret: process.env.SECRET || '' });
+app.register(fjwt, { secret: process.env.SECRET || "" });
 
 app.register(fCookie, {
-  secret: process.env.SECRET || '',
-  hook: 'preHandler',
+  secret: process.env.SECRET || "",
+  hook: "preHandler",
 });
 
 app.register(fastifyCors, {
@@ -39,8 +39,26 @@ app.register(fastifySwagger, {
         "Especificações de cada rota da api de gerenciamento financeiro da FinanceMobApi",
       version: "1.0.0",
     },
+    securityDefinitions: {
+      Bearer: {
+        type: "apiKey",
+        name: "Authorization",
+        in: "header",
+        description: "JWT Authorization header using the Bearer scheme.",
+      },
+    },
   },
   transform: jsonSchemaTransform,
+});
+
+app.addHook("onRequest", (request, reply, done) => {
+  if (
+    request.headers.authorization &&
+    !request.headers.authorization.startsWith("Bearer ")
+  ) {
+    request.headers.authorization = `Bearer ${request.headers.authorization}`;
+  }
+  done();
 });
 
 app.register(fastifySwaggerUi, {
