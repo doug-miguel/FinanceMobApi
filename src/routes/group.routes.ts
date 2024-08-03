@@ -7,8 +7,11 @@ import { Params } from "../types/generic.types.js";
 import { CreateGroup } from "../types/group.types.js";
 
 async function groupRouter(fastify: FastifyInstance) {
-    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/groupId/:id", { preHandler: ValidateAuthenticate, schema: getGroupSchema }, GroupByIdGet);
-    fastify.withTypeProvider<ZodTypeProvider>().post<CreateGroup>("/creategroup", { preHandler: ValidateAuthenticate, schema: createGroupSchema }, GroupCreatePost);
+    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/groupId/:id",
+        { preHandler: ValidateAuthenticate, schema: getGroupSchema }, GroupByIdGet);
+
+    fastify.withTypeProvider<ZodTypeProvider>().post<CreateGroup>("/creategroup",
+        { preHandler: ValidateAuthenticate, schema: createGroupSchema }, GroupCreatePost);
 }
 
 export default groupRouter;

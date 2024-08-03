@@ -7,11 +7,20 @@ import { CreateExpensePost, ExpenseGet, GetCategory, UpdateExpensePut, DeleteExp
 import { Params } from '../types/generic.types.js';
 
 async function expensesRouter(fastify: FastifyInstance) {
-    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/expensesId", { preHandler: ValidateAuthenticate, schema: getExpenseSchema }, ExpenseGet);
-    fastify.withTypeProvider<ZodTypeProvider>().get("/category", { preHandler: ValidateAuthenticate, schema: getCategorySchema }, GetCategory);
-    fastify.withTypeProvider<ZodTypeProvider>().post<ExpenseRequest>("/expensecreate", { preHandler: ValidateAuthenticate, schema: expenseCreateSchema }, CreateExpensePost);
-    fastify.withTypeProvider<ZodTypeProvider>().put<ExpenseUpdateRequest>("/expenseupdate", { preHandler: ValidateAuthenticate, schema: expenseUpdateSchema }, UpdateExpensePut);
-    fastify.withTypeProvider<ZodTypeProvider>().delete<{ Params: Params }>("/expensedelete/:id", { preHandler: ValidateAuthenticate, schema: expenseDeleteSchema }, DeleteExpense);
+    fastify.withTypeProvider<ZodTypeProvider>().get("/category",
+        { preHandler: ValidateAuthenticate, schema: getCategorySchema }, GetCategory);
+
+    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/expensesId",
+        { preHandler: ValidateAuthenticate, schema: getExpenseSchema }, ExpenseGet);
+
+    fastify.withTypeProvider<ZodTypeProvider>().post<ExpenseRequest>("/expensecreate",
+        { preHandler: ValidateAuthenticate, schema: expenseCreateSchema }, CreateExpensePost);
+
+    fastify.withTypeProvider<ZodTypeProvider>().put<ExpenseUpdateRequest>("/expenseupdate",
+        { preHandler: ValidateAuthenticate, schema: expenseUpdateSchema }, UpdateExpensePut);
+
+    fastify.withTypeProvider<ZodTypeProvider>().delete<{ Params: Params }>("/expensedelete/:id",
+        { preHandler: ValidateAuthenticate, schema: expenseDeleteSchema }, DeleteExpense);
 };
 
 export default expensesRouter;

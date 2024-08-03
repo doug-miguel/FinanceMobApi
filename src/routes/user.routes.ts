@@ -7,22 +7,17 @@ import { ResetRequest, UpdateUserRequest } from "../types/user.types.js";
 import { Params } from "../types/generic.types.js";
 
 async function userRouter(fastify: FastifyInstance) {
-  fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/id/:id", {
-    preHandler: ValidateAuthenticate,
-    schema: getUserSchema
-  }, GetUser);
+  fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/id/:id",
+    { preHandler: ValidateAuthenticate, schema: getUserSchema }, GetUser);
 
-  fastify.withTypeProvider<ZodTypeProvider>().post("/create", { schema: createUserSchema }, CreateUser);
+  fastify.withTypeProvider<ZodTypeProvider>().post("/create",
+    { schema: createUserSchema }, CreateUser);
 
-  fastify.withTypeProvider<ZodTypeProvider>().put<UpdateUserRequest>("/update", {
-    preHandler: ValidateAuthenticate,
-    schema: updateUserSchema
-  }, UpdateUser);
+  fastify.withTypeProvider<ZodTypeProvider>().put<UpdateUserRequest>("/update",
+    { preHandler: ValidateAuthenticate, schema: updateUserSchema }, UpdateUser);
 
-  fastify.withTypeProvider<ZodTypeProvider>().post<ResetRequest>('/validatereq', {
-    preHandler: ValidateAuthenticate,
-    schema: resetUserSchema
-  }, ResetReqResUser);
+  fastify.withTypeProvider<ZodTypeProvider>().post<ResetRequest>('/validatereq',
+    { preHandler: ValidateAuthenticate, schema: resetUserSchema }, ResetReqResUser);
 };
 
 export default userRouter;
