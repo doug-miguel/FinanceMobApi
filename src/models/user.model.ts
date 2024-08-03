@@ -10,7 +10,6 @@ export const getUserSchema: FastifySchema = {
 export const createUserSchema: FastifySchema = {
   summary: "Create an user",
   tags: ["User"],
-  security: [{ Bearer: [] }],
   body: z.object({
     full_name: z.string().min(5),
     username: z.string(),

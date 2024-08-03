@@ -7,3 +7,14 @@ export interface ExpenseRequest {
         group_id?: number;
     }
 };
+
+export interface ExpenseUpdateRequest {
+    Body: {
+        id: number;
+        title?: string;
+        notes?: string;
+        price?: number;
+        category_id?: number;
+        group_id?: number;
+    }
+};

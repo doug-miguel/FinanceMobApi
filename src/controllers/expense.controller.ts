@@ -1,7 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { PrismaClient } from '@prisma/client';
-import { ExpenseRequest } from '../types/expense.types.js';
+import { ExpenseRequest, ExpenseUpdateRequest } from '../types/expense.types.js';
 import { DecodeTokenProps } from '../types/auth.types.js';
+import { BadRequest } from '../Errors/bad-request.js';
+import { Params } from '../types/generic.js';
 
 const prisma = new PrismaClient();
 
@@ -67,3 +69,72 @@ export async function CreateExpensePost(req: FastifyRequest<ExpenseRequest>, res
 
     return res.status(201).send({ idExpense: expense.id });
 };
+
+export async function UpdateExpensePut(req: FastifyRequest<ExpenseUpdateRequest>, res: FastifyReply) {
+    try {
+        const {
+            id,
+            category_id,
+            group_id,
+            notes,
+            price,
+            title,
+        } = req.body;
+
+        if (!id) {
+            return new BadRequest('Id da despensa não informado');
+        }
+
+
+        const existingExpense = await prisma.expense.findUnique({
+            where: { id },
+        });
+
+        if (!existingExpense) {
+            return new BadRequest('Despensa não encontrada');
+        }
+
+        const data: Partial<ExpenseUpdateRequest['Body']> = {};
+
+        if (category_id) data.category_id = category_id;
+        if (group_id) data.group_id = group_id;
+        if (notes) data.notes = notes;
+        if (price) data.price = price;
+        if (title) data.title = title;
+
+        await prisma.expense.update({
+            where: { id },
+            data,
+        });
+
+        return res.status(200).send({ message: 'Despesa atualizada' });
+    } catch (error: any) {
+        return res.status(error.statusCode).send({ message: error.message });
+    };
+}
+
+export async function DeleteExpense(req: FastifyRequest<{ Params: Params }>, res: FastifyReply) {
+    try {
+        const id = +req.params.id;
+
+        if (!id) {
+            return new BadRequest('Id da despensa não informado');
+        }
+
+        const existingExpense = await prisma.expense.findUnique({
+            where: { id },
+        });
+
+        if (!existingExpense) {
+            return new BadRequest('Despensa não encontrada');
+        }
+
+        await prisma.expense.delete({
+            where: { id },
+        })
+
+        return res.status(200).send({ message: 'Despesa deletada' });
+    } catch (error: any) {
+        return res.status(error.statusCode).send({ message: error.message });
+    };
+}

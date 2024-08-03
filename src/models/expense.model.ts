@@ -41,3 +41,33 @@ export const expenseCreateSchema: FastifySchema = {
         }),
     },
 };
+
+export const expenseUpdateSchema: FastifySchema = {
+    summary: "Create expense expense",
+    tags: ["Expenses"],
+    security: [{ Bearer: [] }],
+    body: z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        notes: z.string().optional(),
+        price: z.number().optional(),
+        category_id: z.number().optional(),
+        group_id: z.number().nullable().optional(),
+    }),
+    response: {
+        200: z.object({
+            message: z.string(),
+        }),
+    },
+};
+
+export const expenseDeleteSchema: FastifySchema = {
+    summary: "Create expense expense",
+    tags: ["Expenses"],
+    security: [{ Bearer: [] }],
+    response: {
+        200: z.object({
+            message: z.string(),
+        }),
+    },
+};
