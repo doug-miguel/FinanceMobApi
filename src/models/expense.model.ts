@@ -4,7 +4,7 @@ import { categorySchema, expenseSchema } from "../types/category.types.js";
 
 export const getCategorySchema: FastifySchema = {
     summary: "Get category expense",
-    tags: ["Expenses"],
+    tags: ["Category"],
     security: [{ Bearer: [] }],
     response: {
         200: z.object({
