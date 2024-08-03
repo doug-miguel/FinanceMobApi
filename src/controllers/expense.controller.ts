@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { ExpenseRequest, ExpenseUpdateRequest } from '../types/expense.types.js';
 import { DecodeTokenProps } from '../types/auth.types.js';
 import { BadRequest } from '../Errors/bad-request.js';
-import { Params } from '../types/generic.js';
+import { Params } from '../types/generic.types.js';
 
 const prisma = new PrismaClient();
 
@@ -47,27 +47,50 @@ export async function ExpenseGet(req: FastifyRequest, res: FastifyReply) {
 };
 
 export async function CreateExpensePost(req: FastifyRequest<ExpenseRequest>, res: FastifyReply) {
-    const {
-        title,
-        notes,
-        price,
-        category_id,
-        group_id
-    } = req.body;
-
-    const { id }: DecodeTokenProps = await req.jwtDecode();
-    const expense = await prisma.expense.create({
-        data: {
+    try {
+        const {
             title,
             notes,
             price,
             category_id,
-            user_id: id,
             group_id
-        }
-    });
+        } = req.body;
 
-    return res.status(201).send({ idExpense: expense.id });
+        const { id }: DecodeTokenProps = await req.jwtDecode();
+
+        const categoryId = await prisma.expenseCategory.findUnique({
+            where: { id: category_id }
+        })
+
+        if (!categoryId) {
+            return new BadRequest('Categoria não encontrada');
+        }
+
+        if (group_id) {
+            const group = await prisma.group.findUnique({
+                where: { id: group_id }
+            });
+
+            if (!group) {
+                return res.status(400).send({ message: 'Grupo não encontrado' });
+            }
+        }
+
+        const idExpense = await prisma.expense.create({
+            data: {
+                title,
+                notes,
+                price,
+                category_id,
+                user_id: id,
+                group_id
+            }
+        });
+
+        return res.status(201).send({ idExpense: idExpense.id });
+    } catch (error: any) {
+        return res.status(error.statusCode).send({ message: error.message });
+    };
 };
 
 export async function UpdateExpensePut(req: FastifyRequest<ExpenseUpdateRequest>, res: FastifyReply) {

@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { BadRequest } from '../Errors/bad-request.js';
 import { CreateUserRequest, UpdateUserRequest, ResetRequest } from '../types/user.types.js';
 import { DecodeTokenProps } from '../types/auth.types.js';
-import { Params } from '../types/generic.js';
+import { Params } from '../types/generic.types.js';
 
 const prisma = new PrismaClient();
 

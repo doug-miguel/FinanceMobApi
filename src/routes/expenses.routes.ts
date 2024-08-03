@@ -4,7 +4,7 @@ import { expenseCreateSchema, expenseDeleteSchema, expenseUpdateSchema, getCateg
 import { ValidateAuthenticate } from '../middlewares/auth.middlewares.js';
 import { ExpenseRequest, ExpenseUpdateRequest } from '../types/expense.types.js';
 import { CreateExpensePost, ExpenseGet, GetCategory, UpdateExpensePut, DeleteExpense } from '../controllers/expense.controller.js';
-import { Params } from '../types/generic.js';
+import { Params } from '../types/generic.types.js';
 
 async function expensesRouter(fastify: FastifyInstance) {
     fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/expensesId", { preHandler: ValidateAuthenticate, schema: getExpenseSchema }, ExpenseGet);
