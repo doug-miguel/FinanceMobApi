@@ -33,7 +33,7 @@ export const expenseCreateSchema: FastifySchema = {
         notes: z.string(),
         price: z.number(),
         category_id: z.number(),
-        group_id: z.number().nullable().optional(),
+        user_group: z.number().nullable().optional(),
     }),
     response: {
         201: z.object({
@@ -52,7 +52,7 @@ export const expenseUpdateSchema: FastifySchema = {
         notes: z.string().optional(),
         price: z.number().optional(),
         category_id: z.number().optional(),
-        group_id: z.number().nullable().optional(),
+        user_group: z.number().nullable().optional(),
     }),
     response: {
         200: z.object({

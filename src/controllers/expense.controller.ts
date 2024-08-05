@@ -53,7 +53,7 @@ export async function CreateExpensePost(req: FastifyRequest<ExpenseRequest>, res
             notes,
             price,
             category_id,
-            group_id
+            user_group
         } = req.body;
 
         const { id }: DecodeTokenProps = await req.jwtDecode();
@@ -66,14 +66,18 @@ export async function CreateExpensePost(req: FastifyRequest<ExpenseRequest>, res
             return new BadRequest('Categoria não encontrada');
         }
 
-        if (group_id) {
-            const group = await prisma.group.findUnique({
-                where: { id: group_id }
+        let group_id
+
+        if (user_group) {
+            const user_group_id = await prisma.userGroup.findUnique({
+                where: { id: user_group }
             });
 
-            if (!group) {
+            if (!user_group_id) {
                 return res.status(400).send({ message: 'Grupo não encontrado' });
             }
+
+            group_id = user_group_id.group_id
         }
 
         const idExpense = await prisma.expense.create({
@@ -98,7 +102,7 @@ export async function UpdateExpensePut(req: FastifyRequest<ExpenseUpdateRequest>
         const {
             id,
             category_id,
-            group_id,
+            user_group,
             notes,
             price,
             title,
@@ -119,8 +123,22 @@ export async function UpdateExpensePut(req: FastifyRequest<ExpenseUpdateRequest>
 
         const data: Partial<ExpenseUpdateRequest['Body']> = {};
 
+        let group_id_user
+
+        if (user_group) {
+            const user_group_id = await prisma.userGroup.findUnique({
+                where: { id: user_group }
+            });
+
+            if (!user_group_id) {
+                return res.status(400).send({ message: 'Grupo não encontrado' });
+            }
+
+            group_id_user = user_group_id.group_id
+        }
+
         if (category_id) data.category_id = category_id;
-        if (group_id) data.group_id = group_id;
+        if (user_group) data.group_id = group_id_user;
         if (notes) data.notes = notes;
         if (price) data.price = price;
         if (title) data.title = title;
