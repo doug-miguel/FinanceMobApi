@@ -16,3 +16,18 @@ export const authSchema: FastifySchema = {
         }),
     },
 };
+
+export const resetUserSchema: FastifySchema = {
+    summary: "Reset an user",
+    tags: ["Auth"],
+    body: z.object({
+        email: z.string().email(),
+        security_question: z.string(),
+        security_response: z.string(),
+    }),
+    response: {
+        200: z.object({
+            token: z.string(),
+        }),
+    },
+};

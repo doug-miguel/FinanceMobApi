@@ -44,18 +44,3 @@ export const updateUserSchema: FastifySchema = {
     security_response: z.string().optional(),
   }),
 };
-
-export const resetUserSchema: FastifySchema = {
-  summary: "Reset an user",
-  tags: ["User"],
-  security: [{ Bearer: [] }],
-  body: z.object({
-    security_question: z.string(),
-    security_response: z.string(),
-  }),
-  response: {
-    201: z.object({
-      validate: z.boolean(),
-    }),
-  },
-};

@@ -6,3 +6,11 @@ export interface DecodeTokenProps {
   iat: number
   exp: number
 };
+
+export interface ResetRequest {
+  Body: {
+    email: string;
+    security_question: string;
+    security_response: string;
+  };
+};

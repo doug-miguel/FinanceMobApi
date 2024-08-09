@@ -34,10 +34,3 @@ export interface UpdateUserRequest {
     security_response?: string;
   };
 };
-
-export interface ResetRequest {
-  Body: {
-    security_question: string;
-    security_response: string;
-  };
-};
