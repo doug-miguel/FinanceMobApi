@@ -29,7 +29,6 @@ model Group {
   id          Int    @id @default(autoincrement())
   description String
   active      Int
-  createUser  Int
 
   users   UserGroup[]
   Expense Expense[]
@@ -38,9 +37,10 @@ model Group {
 }
 
 model UserGroup {
-  id       Int @id @default(autoincrement())
-  user_id  Int
-  group_id Int
+  id          Int @id @default(autoincrement())
+  user_id     Int
+  group_id    Int
+  create_user Int
 
   user  User  @relation(fields: [user_id], references: [id])
   group Group @relation(fields: [group_id], references: [id])

@@ -20,6 +20,7 @@ CREATE TABLE "groups" (
     "id" SERIAL NOT NULL,
     "description" TEXT NOT NULL,
     "active" INTEGER NOT NULL,
+    "createUser" INTEGER NOT NULL,
 
     CONSTRAINT "groups_pkey" PRIMARY KEY ("id")
 );
@@ -37,6 +38,7 @@ CREATE TABLE "users_groups" (
 CREATE TABLE "expenses" (
     "id" SERIAL NOT NULL,
     "price" INTEGER NOT NULL,
+    "title" TEXT NOT NULL,
     "notes" TEXT NOT NULL,
     "category_id" INTEGER NOT NULL,
     "user_id" INTEGER NOT NULL,
@@ -63,9 +65,6 @@ ALTER TABLE "users_groups" ADD CONSTRAINT "users_groups_user_id_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "users_groups" ADD CONSTRAINT "users_groups_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "groups"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "expenses" ADD CONSTRAINT "expenses_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "expenses" ADD CONSTRAINT "expenses_group_id_fkey" FOREIGN KEY ("group_id") REFERENCES "groups"("id") ON DELETE SET NULL ON UPDATE CASCADE;
