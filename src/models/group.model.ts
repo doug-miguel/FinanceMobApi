@@ -21,3 +21,19 @@ export const createGroupSchema: FastifySchema = {
         }),
     },
 };
+
+export const updateGroupSchema: FastifySchema = {
+    summary: "Update group",
+    tags: ["Group"],
+    security: [{ Bearer: [] }],
+    body: z.object({
+        id: z.number(),
+        description: z.string().optional(),
+        active: z.number().optional(),
+    }),
+    response: {
+        201: z.object({
+            message: z.string(),
+        }),
+    },
+};

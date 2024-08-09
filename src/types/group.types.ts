@@ -4,3 +4,11 @@ export interface CreateGroup {
         active: number
     }
 }
+
+export interface UpdateGroup {
+    Body: {
+        id: number;
+        description?: string;
+        active?: number
+    }
+}

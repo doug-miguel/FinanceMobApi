@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify";
 import authRouter from "./auth.routes.js";
-import userRouter from "./user.routes.js";
 import expensesRouter from "./expenses.routes.js";
 import groupRouter from "./group.routes.js";
+import userRouter from "./user.routes.js";
 
 async function router(fastify: FastifyInstance) {
   fastify.register(expensesRouter, { prefix: "api/v1/expense" });

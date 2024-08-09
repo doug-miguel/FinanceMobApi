@@ -1,9 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { FastifyRequest, FastifyReply } from "fastify";
-import { Params } from "../types/generic.types.js";
+import { FastifyReply, FastifyRequest } from "fastify";
 import { BadRequest } from "../Errors/bad-request.js";
-import { CreateGroup } from "../types/group.types.js";
-import { DecodeTokenProps } from "../types/auth.types.js";
+import { Params } from "../types/generic.types.js";
+import { CreateGroup, UpdateGroup } from "../types/group.types.js";
 
 const prisma = new PrismaClient();
 
@@ -40,16 +39,50 @@ export async function GroupCreatePost(req: FastifyRequest<CreateGroup>, res: Fas
             active,
         } = req.body;
 
-        const { id }: DecodeTokenProps = await req.jwtDecode();
-
         const idGroup = await prisma.group.create({
             data: {
                 description,
                 active,
-                createUser: id
             }
         })
         return res.status(201).send({ idGroup: idGroup.id });
+    } catch (error: any) {
+        return res.status(error.statusCode).send({ message: error.message });
+    };
+};
+
+export async function GroupUpdatePut(req: FastifyRequest<UpdateGroup>, res: FastifyReply) {
+    try {
+        const {
+            id,
+            description,
+            active,
+        } = req.body;
+
+        if (!id) {
+            return new BadRequest('Id não informado');
+        }
+
+        const groupId = await prisma.group.findUnique({
+            where: { id }
+        });
+
+        if (!groupId) {
+            return new BadRequest('Grupo não encontrada');
+        }
+
+        const data: Partial<UpdateGroup['Body']> = {};
+
+        if (description) data.description = description;
+        if (active === 0) data.active = 0;
+        if (active === 1) data.active = 1;
+
+        await prisma.group.update({
+            where: { id },
+            data,
+        });
+
+        return res.status(201).send({ message: 'Grupo atualizado' });
     } catch (error: any) {
         return res.status(error.statusCode).send({ message: error.message });
     };
