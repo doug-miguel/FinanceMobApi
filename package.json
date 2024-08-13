@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts",
+    "start": "tsx index.ts",
     "dev": "tsx --inspect --watch --trace-warnings index.ts",
-    "build": "tsup src/index.ts --format cjs,esm --dts --minify"
+    "build": "tsup index.ts --format cjs,esm --minify"
   },
   "keywords": [],
   "author": "",
