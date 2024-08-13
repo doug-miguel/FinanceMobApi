@@ -1,4 +1,4 @@
-import { app } from "./src/server";
+import { app } from "./server.js";
 const port = 8080;
 
 const start = async () => {
