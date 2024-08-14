@@ -1,5 +1,5 @@
 import { app } from "./server.js";
-const port = 8080;
+const port: any = process.env.PORT || 8080;
 
 const start = async () => {
   try {
