@@ -3,12 +3,12 @@ import { z } from "zod";
 
 export const invitationGetSchema: FastifySchema = {
     summary: "invitation Get Send",
-    tags: ["invitation"],
+    tags: ["Invitation"],
 };
 
 export const invitationCreateSchema: FastifySchema = {
     summary: "invitation Create Send",
-    tags: ["invitation"],
+    tags: ["Invitation"],
     body: z.object({
         email: z.string(),
         group_id: z.number(),
@@ -22,7 +22,7 @@ export const invitationCreateSchema: FastifySchema = {
 
 export const invitationResponseSchema: FastifySchema = {
     summary: "invitation response Send",
-    tags: ["invitation"],
+    tags: ["Invitation"],
     body: z.object({
         id: z.number(),
         action: z.string(),
