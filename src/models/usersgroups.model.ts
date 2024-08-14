@@ -1,7 +1,7 @@
 import { FastifySchema } from "fastify";
 
 export const getUsersGroupsSchema: FastifySchema = {
-    summary: "Get an User_Groups",
-    tags: ["User_Groups"],
+    summary: "Get an Users Groups",
+    tags: ["Users Groups"],
     security: [{ Bearer: [] }],
 };

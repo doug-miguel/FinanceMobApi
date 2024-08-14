@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { BadRequest } from "../Errors/bad-request.js";
 import { Params } from "../types/generic.types.js";
 import { CreateGroup, UpdateGroup } from "../types/group.types.js";
+import { DecodeTokenProps } from "@/types/auth.types.js";
 
 const prisma = new PrismaClient();
 
@@ -39,13 +40,24 @@ export async function GroupCreatePost(req: FastifyRequest<CreateGroup>, res: Fas
             active,
         } = req.body;
 
+        const { id }: DecodeTokenProps = await req.jwtDecode();
+
         const idGroup = await prisma.group.create({
             data: {
                 description,
                 active,
             }
         })
-        return res.status(201).send({ idGroup: idGroup.id });
+
+        const idUserGroup = await prisma.userGroup.create({
+            data: {
+                user_id: +id,
+                create_user: +id,
+                group_id: idGroup.id,
+            }
+        })
+
+        return res.status(201).send({ idUserGroup: idUserGroup.id });
     } catch (error: any) {
         return res.status(error.statusCode).send({ message: error.message });
     };
@@ -68,7 +80,7 @@ export async function GroupUpdatePut(req: FastifyRequest<UpdateGroup>, res: Fast
         });
 
         if (!groupId) {
-            return new BadRequest('Grupo não encontrada');
+            return new BadRequest('Grupo não encontrado');
         }
 
         const data: Partial<UpdateGroup['Body']> = {};

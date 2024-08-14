@@ -14,3 +14,10 @@ export interface ResetRequest {
     security_response: string;
   };
 };
+
+export interface AuthRequest {
+  Body: {
+    email: string;
+    password: string;
+  }
+}

@@ -17,7 +17,7 @@ export const createGroupSchema: FastifySchema = {
     }),
     response: {
         201: z.object({
-            idGroup: z.number(),
+            idUserGroup: z.number(),
         }),
     },
 };

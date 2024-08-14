@@ -3,6 +3,7 @@ import authRouter from "./auth.routes.js";
 import expensesRouter from "./expenses.routes.js";
 import groupRouter from "./group.routes.js";
 import userRouter from "./user.routes.js";
+import invitationRouter from "./invitation.routes.js";
 import usersGroupsRouter from "./usersgroups.routes.js";
 
 async function router(fastify: FastifyInstance) {
@@ -11,6 +12,7 @@ async function router(fastify: FastifyInstance) {
   fastify.register(userRouter, { prefix: "api/v1/user" });
   fastify.register(groupRouter, { prefix: "api/v1/group" });
   fastify.register(usersGroupsRouter, { prefix: "api/v1/usersgroups" });
+  fastify.register(invitationRouter, { prefix: "api/v1/invitation" });
 };
 
 export default router;

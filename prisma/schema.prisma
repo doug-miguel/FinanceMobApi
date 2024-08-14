@@ -20,7 +20,8 @@ model User {
   security_question String
   security_response String
 
-  groups UserGroup[]
+  groups     UserGroup[]
+  Invitation Invitation[]
 
   @@map("users")
 }
@@ -30,8 +31,9 @@ model Group {
   description String
   active      Int
 
-  users   UserGroup[]
-  Expense Expense[]
+  users      UserGroup[]
+  Expense    Expense[]
+  Invitation Invitation[]
 
   @@map("groups")
 }
@@ -72,4 +74,19 @@ model ExpenseCategory {
   expenses Expense[]
 
   @@map("expense_categories")
+}
+
+model Invitation {
+  id         Int      @id @default(autoincrement())
+  email      String
+  group_id   Int
+  invited_by Int
+  status     String   @default("pending")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  group   Group @relation(fields: [group_id], references: [id])
+  inviter User  @relation(fields: [invited_by], references: [id])
+
+  @@map("invitations")
 }

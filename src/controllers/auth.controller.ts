@@ -3,14 +3,7 @@ import bcrypt from 'bcrypt';
 
 import { prisma } from "../lib/prisma.js";
 import { BadRequest } from "../Errors/bad-request.js";
-import { ResetRequest } from "../types/auth.types.js";
-
-interface AuthRequest {
-    Body: {
-        email: string;
-        password: string;
-    }
-}
+import { AuthRequest, ResetRequest } from "../types/auth.types.js";
 
 export async function Auth(req: FastifyRequest<AuthRequest>, res: FastifyReply) {
     try {
