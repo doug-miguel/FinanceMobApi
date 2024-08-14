@@ -3,7 +3,7 @@
   "builds": [
     { "src": "package.json", "use": "@vercel/static" },
     {
-      "src": "src/index.ts",
+      "src": "build/index.js",
       "use": "@vercel/node",
       "config": { "includeFiles": ["build/**"] }
     }
@@ -11,7 +11,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "build/index.js"
+      "dest": "/"
     }
   ],
   "outputDirectory": "build"
