@@ -5,7 +5,6 @@ const port = parseInt(process.env.PORT || "8080");
 const start = async () => {
     try {
         await server_js_1.app.listen({ port: port });
-        console.log(`Server is running on port ${port}`);
     }
     catch (err) {
         console.error(err);
