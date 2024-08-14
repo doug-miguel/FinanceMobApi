@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsup src --format esm",
     "start": "prisma migrate deploy && node dist/index.js",
-    "dev": "tsx --inspect --watch --trace-warnings src/index.ts"
+    "dev": "tsx --inspect --watch --trace-warnings src/index.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",

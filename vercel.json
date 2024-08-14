@@ -5,14 +5,19 @@
       "src": "src/index.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "dist/**"
+        "includeFiles": ["prisma/schema.prisma"]
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/index.js"
+      "dest": "src/index.ts"
     }
-  ]
+  ],
+  "env": {
+    "DATABASE_URL": "@database-url",
+    "SECRET": "@secret",
+    "PORT": "@port"
+  }
 }
