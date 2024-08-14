@@ -1,5 +1,5 @@
 import { app } from "./server.js";
-const port: any = process.env.PORT || 8080;
+const port: number = parseInt(process.env.PORT || "8080");
 
 const start = async () => {
   try {

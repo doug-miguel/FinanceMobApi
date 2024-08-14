@@ -35,8 +35,7 @@ app.register(fastifySwagger, {
     produces: ["application/json"],
     info: {
       title: "FinanceMobApi",
-      description:
-        "Especificações de cada rota da api de gerenciamento financeiro da FinanceMobApi",
+      description: "Especificações de cada rota da api de gerenciamento financeiro da FinanceMobApi",
       version: "1.0.0",
     },
     securityDefinitions: {
