@@ -19,6 +19,7 @@
     "@fastify/swagger": "^8.15.0",
     "@fastify/swagger-ui": "^4.0.1",
     "@prisma/client": "^5.17.0",
+    "@vercel/node": "^3.2.8",
     "bcrypt": "^5.1.1",
     "fastify": "^4.28.0",
     "fastify-type-provider-zod": "^2.0.0",
