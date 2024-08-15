@@ -1,5 +1,5 @@
-import { GetInvitation, RespondInvitationPost, SendInvitationPost } from "@/controllers/invitation.controller.js";
-import { invitationCreateSchema, invitationGetSchema, invitationResponseSchema } from "@/models/invitation.model.js";
+import { GetInvitation, RespondInvitationPost, SendInvitationPost } from "../controllers/invitation.controller.js";
+import { invitationCreateSchema, invitationGetSchema, invitationResponseSchema } from "../models/invitation.model.js";
 import { HandleInvitation, SendInvitation } from "@/types/invitation.types.js";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
