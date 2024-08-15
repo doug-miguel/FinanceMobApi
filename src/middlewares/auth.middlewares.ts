@@ -5,14 +5,13 @@ export const ValidateAuthenticate = async (req: FastifyRequest, res: FastifyRepl
     try {
         const token = req.headers.authorization?.replace(/^Bearer /i, '');
         if (!token) {
-            res.status(401).send(new Unauthorized('Não autorizado - Token não encontrado.'));
-            return;
+            throw new Unauthorized('Não autorizado - Token não encontrado.');
         }
 
         const decodedToken: any = await req.jwtVerify();
+
         if (!decodedToken) {
-            res.status(401).send(new Unauthorized('Não autorizado - Token inválido.'));
-            return;
+            throw new Unauthorized('Não autorizado - Token inválido.');
         }
     } catch (error: any) {
         res.status(error.statusCode || 500).send({ message: error.message });
