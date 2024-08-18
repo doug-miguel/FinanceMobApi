@@ -36,7 +36,7 @@ export async function ExpenseGet(req: FastifyRequest, res: FastifyReply) {
             skip: pagesCounter,
             where: whereConditions,
             orderBy: {
-                id: 'asc'
+                id: 'desc'
             }
         });
 

@@ -11,7 +11,7 @@ export async function Auth(req: FastifyRequest<AuthRequest>, res: FastifyReply) 
 
         const existsUserEmail = await prisma.user.findUnique({
             where: {
-                email,
+                email: email.toLocaleLowerCase(),
             },
         });
 
@@ -43,7 +43,7 @@ export async function ResetReqResUser(req: FastifyRequest<ResetRequest>, res: Fa
         } = req.body;
 
         const existingUser = await prisma.user.findUnique({
-            where: { email },
+            where: { email: email.toLocaleLowerCase() },
         });
 
         if (!existingUser) {

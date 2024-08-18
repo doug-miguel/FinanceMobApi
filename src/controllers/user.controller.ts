@@ -57,7 +57,7 @@ export async function CreateUser(req: FastifyRequest<CreateUserRequest>, res: Fa
         const user = await prisma.user.create({
             data: {
                 full_name,
-                email,
+                email: email.toLocaleLowerCase(),
                 username,
                 phone,
                 birthday,
@@ -115,7 +115,7 @@ export async function UpdateUser(req: FastifyRequest<UpdateUserRequest>, res: Fa
 
         if (full_name) data.full_name = full_name;
         if (username) data.username = username;
-        if (email) data.email = email;
+        if (email) data.email = email.toLocaleLowerCase();
         if (phone) data.phone = phone;
         if (birthday) data.birthday = birthday;
         if (password) data.password = hashedPassword;
