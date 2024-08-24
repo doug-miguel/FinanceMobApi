@@ -78,7 +78,7 @@ model ExpenseCategory {
 
 model Invitation {
   id         Int      @id @default(autoincrement())
-  email      String
+  id_user    Int
   group_id   Int
   invited_by Int
   status     String   @default("pending")

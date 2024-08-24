@@ -3,27 +3,26 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { BadRequest } from "../Errors/bad-request.js";
 import { DecodeTokenProps } from "@/types/auth.types.js";
 import { HandleInvitation, SendInvitation } from "../types/invitation.types.js";
-import { Params } from "@/types/generic.types.js";
 
 const prisma = new PrismaClient();
 
-export async function GetInvitation(req: FastifyRequest<{ Params: Params }>, res: FastifyReply) {
+export async function GetInvitation(req: FastifyRequest, res: FastifyReply) {
     try {
-        const id = +req.params.id;
+        const { id }: DecodeTokenProps = await req.jwtDecode();
 
-        if (!id) {
-            return new BadRequest('Id do convite não informado');
-        }
-
-        const invitation = await prisma.invitation.findUnique({
-            where: { id },
+        const invitation = await prisma.invitation.findMany({
+            where: {
+                id_user: Number(id)
+            }
         });
 
         if (!invitation) {
             return new BadRequest('Convite não encontrado.');
         }
 
-        return res.status(200).send(invitation);
+        const filteredInvitations = invitation.map(({ created_at, updated_at, id, invited_by, ...rest }) => rest);
+
+        return res.status(200).send(filteredInvitations);
     } catch (error: any) {
         return res.status(error.statusCode).send({ message: error.message });
     }
@@ -61,9 +60,31 @@ export async function SendInvitationPost(req: FastifyRequest<SendInvitation>, re
             return new BadRequest('Usuário já está no grupo.');
         }
 
+        const existingInvitation = await prisma.invitation.findFirst({
+            where: {
+                id_user: user.id,
+                group_id,
+                status: 'pending',
+            }
+        });
+
+        if (existingInvitation) {
+            return new BadRequest('Convite já foi enviado.');
+        }
+
+        const createGroupUser = await prisma.userGroup.findFirst({
+            where: {
+                group_id: group_id,
+            }
+        });
+
+        if (createGroupUser?.create_user !== id) {
+            return new BadRequest('Apenas o criado do grupo pode adicionar membros.');
+        }
+
         const invitation = await prisma.invitation.create({
             data: {
-                email,
+                id_user: user.id,
                 group_id,
                 invited_by: id,
             },

@@ -4,10 +4,9 @@ import { HandleInvitation, SendInvitation } from "@/types/invitation.types.js";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { ValidateAuthenticate } from "../middlewares/auth.middlewares.js";
-import { Params } from "../types/generic.types.js";
 
 async function invitationRouter(fastify: FastifyInstance) {
-    fastify.withTypeProvider<ZodTypeProvider>().get<{ Params: Params }>("/:id",
+    fastify.withTypeProvider<ZodTypeProvider>().get("/",
         { preHandler: ValidateAuthenticate, schema: invitationGetSchema }, GetInvitation);
 
     fastify.withTypeProvider<ZodTypeProvider>().post<SendInvitation>("/sendinvitation",
