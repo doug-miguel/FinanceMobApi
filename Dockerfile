@@ -17,6 +17,7 @@ RUN npm install
 COPY . .
 
 # Compile o código TypeScript
+RUN npx prisma generate
 RUN npm run build
 
 # Exponha a porta que o seu aplicativo vai usar
